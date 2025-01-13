@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
 @Entity(name = "tb_postagens")
@@ -14,8 +16,10 @@ public class PostagemModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull(message = "Titulo não pode ficar em branco")
+    @Size(min = 5, max = 60, message = "Titulo deve estar entre 5 a 60 caracteres")
     private String titulo;
     @NotNull(message = "Texto não pode ficar em branco")
+    @Size(min = 1, max = 255, message = "Texto deve estar entre 1 a 255 caracteres")
     private String texto;
     @NotNull(message = "Data não pode ficar em branco")
     private LocalDateTime data;
