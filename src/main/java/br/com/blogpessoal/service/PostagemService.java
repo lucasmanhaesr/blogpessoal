@@ -3,6 +3,7 @@ package br.com.blogpessoal.service;
 import br.com.blogpessoal.dto.PostagemUpdateDto;
 import br.com.blogpessoal.model.PostagemModel;
 import br.com.blogpessoal.repository.PostagemRepository;
+import br.com.blogpessoal.repository.TemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +18,32 @@ public class PostagemService {
 
     @Autowired
     private PostagemRepository repository;
+    @Autowired
+    private TemaRepository temaRepository;
 
     @ResponseStatus(HttpStatus.CREATED)
     public void create(PostagemModel postagem) {
-        repository.save(postagem);
+        if(temaRepository.existsById(postagem.getTema().getId())) {
+            repository.save(postagem);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe o id do tema informado: " + postagem.getTema().getId());
+        }
     }
 
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PostagemModel> update(PostagemUpdateDto postagemUpdateDto) {
-        Optional<PostagemModel> postagemOpt = repository.findById(postagemUpdateDto.id());
-        if (postagemOpt.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não existe registro com o id" + postagemUpdateDto.id());
+    public void update(PostagemUpdateDto postagemUpdateDto) {
+        if(temaRepository.existsById(postagemUpdateDto.tema().getId())) {
+            Optional<PostagemModel> postagemOpt = repository.findById(postagemUpdateDto.id());
+            if (postagemOpt.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe registro com o id" + postagemUpdateDto.id());
+            }
+            PostagemModel postagemModel = new PostagemModel(postagemUpdateDto.id(), postagemUpdateDto.titulo(), postagemUpdateDto.texto(), postagemUpdateDto.data(), postagemUpdateDto.tema());
+            ResponseEntity.status(HttpStatus.OK).body(repository.save(postagemModel));
         }
-        PostagemModel postagemModel = new PostagemModel(postagemUpdateDto.id(), postagemUpdateDto.titulo(), postagemUpdateDto.texto(), postagemUpdateDto.data());
-        return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagemModel));
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe o id do tema informado: " + postagemUpdateDto.tema().getId());
+        }
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -57,7 +70,7 @@ public class PostagemService {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PostagemModel>> findAll(){
         if(repository.findAll().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não existe registros na base de dados");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe registros na base de dados");
         }
         return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
     }

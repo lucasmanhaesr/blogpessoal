@@ -1,5 +1,6 @@
 package br.com.blogpessoal.dto;
 
+import br.com.blogpessoal.model.TemaModel;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -14,5 +15,7 @@ public record PostagemUpdateDto(
         @Size(min = 1, max = 255, message = "Texto deve estar entre 1 a 255 caracteres")
         String texto,
         @NotNull(message = "Data não pode ficar em branco ex: YYYY-MM-DDT00:00:00")
-        LocalDateTime data
+        LocalDateTime data,
+        @NotNull(message = "O id do tema não pode ficar em branco")
+        TemaModel tema
 ) {}

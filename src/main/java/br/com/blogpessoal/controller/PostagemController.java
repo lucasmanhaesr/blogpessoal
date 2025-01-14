@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController()
@@ -16,42 +17,40 @@ import java.util.List;
 public class PostagemController {
 
     @Autowired
-    private PostagemService service;
+    private PostagemService postagemService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public void create(@Valid @RequestBody PostagemModel postagemModel) {
-        service.create(postagemModel);
+        postagemService.create(postagemModel);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("")
-    public ResponseEntity<PostagemModel> update(@Valid @RequestBody PostagemUpdateDto postagemUpdateDto) {
-        return service.update(postagemUpdateDto);
+    public void update(@Valid @RequestBody PostagemUpdateDto postagemUpdateDto) {
+        postagemService.update(postagemUpdateDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id) {
-        service.delete(id);
+        postagemService.delete(id);
     }
 
     @GetMapping(value = "", params = "id")
     public ResponseEntity<PostagemModel> findById(@RequestParam("id") Long id) {
-        return service.findByID(id);
+        return postagemService.findByID(id);
     }
 
     @GetMapping(value = "", params = "titulo")
     public ResponseEntity<List<PostagemModel>> findByTitulo(@RequestParam("titulo") String titulo) {
-        return service.findByTituloContainingIgnoreCase(titulo);
+        return postagemService.findByTituloContainingIgnoreCase(titulo);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
     public ResponseEntity<List<PostagemModel>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.findAll().getBody());
+        return ResponseEntity.status(HttpStatus.OK).body(postagemService.findAll().getBody());
     }
-
-
 
 }

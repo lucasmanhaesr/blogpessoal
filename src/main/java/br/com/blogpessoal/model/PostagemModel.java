@@ -1,15 +1,13 @@
 package br.com.blogpessoal.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "tb_postagens")
+@Entity(name = "tb_postagem")
 public class PostagemModel {
 
     @Id
@@ -24,12 +22,20 @@ public class PostagemModel {
     @NotNull(message = "Data não pode ficar em branco")
     private LocalDateTime data;
 
-    public PostagemModel() {}
-    public PostagemModel(long id, String titulo, String texto, LocalDateTime data) {
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, targetEntity = TemaModel.class)
+    //JsonIgnoreProperties = postagens: ignora a propriedade postagens ao exigir tema para não ter a redundancia infinita
+    @JsonIgnoreProperties("postagens")
+    private TemaModel tema;
+
+    public PostagemModel() {
+    }
+
+    public PostagemModel(long id, String titulo, String texto, LocalDateTime data, TemaModel tema) {
         this.id = id;
         this.titulo = titulo;
         this.texto = texto;
         this.data = data;
+        this.tema = tema;
     }
 
     public long getId() {
@@ -62,5 +68,13 @@ public class PostagemModel {
 
     public void setData(LocalDateTime data) {
         this.data = data;
+    }
+
+    public TemaModel getTema() {
+        return tema;
+    }
+
+    public void setTema(TemaModel tema) {
+        this.tema = tema;
     }
 }
