@@ -24,6 +24,14 @@ public class PostagemModel {
     @NotNull(message = "Data não pode ficar em branco")
     private LocalDateTime data;
 
+    public PostagemModel() {}
+    public PostagemModel(long id, String titulo, String texto, LocalDateTime data) {
+        this.id = id;
+        this.titulo = titulo;
+        this.texto = texto;
+        this.data = data;
+    }
+
     public long getId() {
         return id;
     }

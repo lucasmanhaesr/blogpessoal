@@ -1,5 +1,6 @@
 package br.com.blogpessoal.service;
 
+import br.com.blogpessoal.dto.PostagemUpdateDto;
 import br.com.blogpessoal.model.PostagemModel;
 import br.com.blogpessoal.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class PostagemService {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PostagemModel> update(long id, PostagemModel postagemModel) {
-        Optional<PostagemModel> postagemOpt = repository.findById(id);
+    public ResponseEntity<PostagemModel> update(PostagemUpdateDto postagemUpdateDto) {
+        Optional<PostagemModel> postagemOpt = repository.findById(postagemUpdateDto.id());
         if (postagemOpt.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não existe registro com o id" + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não existe registro com o id" + postagemUpdateDto.id());
         }
-        postagemModel.setId(id);
+        PostagemModel postagemModel = new PostagemModel(postagemUpdateDto.id(), postagemUpdateDto.titulo(), postagemUpdateDto.texto(), postagemUpdateDto.data());
         return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagemModel));
     }
 

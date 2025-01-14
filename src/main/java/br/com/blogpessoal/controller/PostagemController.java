@@ -1,5 +1,6 @@
 package br.com.blogpessoal.controller;
 
+import br.com.blogpessoal.dto.PostagemUpdateDto;
 import br.com.blogpessoal.model.PostagemModel;
 import br.com.blogpessoal.service.PostagemService;
 import jakarta.validation.Valid;
@@ -24,9 +25,9 @@ public class PostagemController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}")
-    public ResponseEntity<PostagemModel> update(@Valid @PathVariable long id, @RequestBody PostagemModel postagemModel) {
-        return service.update(id, postagemModel);
+    @PutMapping("")
+    public ResponseEntity<PostagemModel> update(@Valid @RequestBody PostagemUpdateDto postagemUpdateDto) {
+        return service.update(postagemUpdateDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
