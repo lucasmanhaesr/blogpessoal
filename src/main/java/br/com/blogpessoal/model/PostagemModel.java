@@ -26,9 +26,11 @@ public class PostagemModel {
     @JsonIgnoreProperties("postagens")
     private TemaModel tema;
 
-    public PostagemModel() {
-    }
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, targetEntity = UsuarioModel.class)
+    @JsonIgnoreProperties("postagens")
+    private UsuarioModel usuario;
 
+    public PostagemModel() {}
     public PostagemModel(long id, String titulo, String texto, LocalDateTime data, TemaModel tema) {
         this.id = id;
         this.titulo = titulo;
@@ -76,4 +78,13 @@ public class PostagemModel {
     public void setTema(TemaModel tema) {
         this.tema = tema;
     }
+
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
+
 }
