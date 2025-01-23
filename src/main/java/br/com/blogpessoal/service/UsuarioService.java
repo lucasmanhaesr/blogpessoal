@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Optional;
 
 @Service
@@ -27,10 +28,12 @@ public class UsuarioService {
 
     public Optional<UsuarioModel> cadastrarUsuario(UsuarioModel usuarioModel) {
 
-        if (usuarioRepository.findByUsuario(usuarioModel.getUsuario()).isPresent())
+        if (usuarioRepository.findByUsuario(usuarioModel.getUsuario()).isPresent()) {
             return Optional.empty();
+        }
 
         usuarioModel.setSenha(criptografarSenha(usuarioModel.getSenha()));
+
 
         return Optional.of(usuarioRepository.save(usuarioModel));
 
@@ -47,7 +50,7 @@ public class UsuarioService {
 
             usuarioModel.setSenha(criptografarSenha(usuarioModel.getSenha()));
 
-            return Optional.ofNullable(usuarioRepository.save(usuarioModel));
+            return Optional.of(usuarioRepository.save(usuarioModel));
 
         }
 

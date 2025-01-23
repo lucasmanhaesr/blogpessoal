@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
 
 @Entity(name = "tb_usuarios")
@@ -33,6 +32,15 @@ public class UsuarioModel {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "usuario")
     @JsonIgnoreProperties("usuario")
     private List<PostagemModel> postagens;
+
+    public UsuarioModel() {}
+    public UsuarioModel(Long id, String nome, String usuario, String senha, String foto) {
+        this.id = id;
+        this.nome = nome;
+        this.usuario = usuario;
+        this.senha = senha;
+        this.foto = foto;
+    }
 
     public Long getId() {
         return id;
