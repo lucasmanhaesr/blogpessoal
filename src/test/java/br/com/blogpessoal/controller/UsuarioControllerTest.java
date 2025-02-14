@@ -1,5 +1,6 @@
 package br.com.blogpessoal.controller;
 
+import br.com.blogpessoal.dto.UsuarioCadastroDto;
 import br.com.blogpessoal.model.UsuarioModel;
 import br.com.blogpessoal.repository.UsuarioRepository;
 import br.com.blogpessoal.service.UsuarioService;
@@ -34,7 +35,7 @@ public class UsuarioControllerTest {
     @BeforeAll
     void start(){
         usuarioRepository.deleteAll();
-        usuarioService.cadastrarUsuario(new UsuarioModel(null,"Root", "root@root.com", "rootroot", "-"));
+        usuarioService.cadastrarUsuario(new UsuarioCadastroDto("Root", "root@root.com", "rootroot", "-"));
     }
 
     @Test
@@ -53,7 +54,7 @@ public class UsuarioControllerTest {
     @DisplayName("Não permitir cadastros duplicados")
     public void naoPermitirCadastroUsuarioDuplicado() {
 
-        usuarioService.cadastrarUsuario(new UsuarioModel(null,"Maria da Silva", "maria_silva@email.com.br", "13465278", "-"));
+        usuarioService.cadastrarUsuario(new UsuarioCadastroDto("Maria da Silva", "maria_silva@email.com.br", "13465278", "-"));
 
         HttpEntity<UsuarioModel> corpoRequisicao = new HttpEntity<UsuarioModel>(new UsuarioModel(null,"Maria da Silva", "maria_silva@email.com.br", "13465278", "-"));
 
@@ -66,7 +67,7 @@ public class UsuarioControllerTest {
     @DisplayName("Atualizar Usuário")
     public void atualizarUsuario() {
 
-        Optional<UsuarioModel> usuarioCadastrado = usuarioService.cadastrarUsuario(new UsuarioModel(null,"Juliana Andrews", "juliana_andrews@email.com.br", "juliana123", "-"));
+        Optional<UsuarioModel> usuarioCadastrado = usuarioService.cadastrarUsuario(new UsuarioCadastroDto("Juliana Andrews", "juliana_andrews@email.com.br", "juliana123", "-"));
 
         UsuarioModel usuarioUpdate = new UsuarioModel(usuarioCadastrado.get().getId(),"Juliana Andrews Ramos", "juliana_ramos@email.com.br", "juliana123" , "-");
 
@@ -83,9 +84,9 @@ public class UsuarioControllerTest {
     @DisplayName("Listar todos os Usuários")
     public void listarUsuarios() {
 
-        usuarioService.cadastrarUsuario(new UsuarioModel(null,"Sabrina Sanches", "sabrina_sanches@email.com.br", "sabrina123", "-"));
+        usuarioService.cadastrarUsuario(new UsuarioCadastroDto("Sabrina Sanches", "sabrina_sanches@email.com.br", "sabrina123", "-"));
 
-        usuarioService.cadastrarUsuario(new UsuarioModel(null,"Ricardo Marques", "ricardo_marques@email.com.br", "ricardo123", "-"));
+        usuarioService.cadastrarUsuario(new UsuarioCadastroDto("Ricardo Marques", "ricardo_marques@email.com.br", "ricardo123", "-"));
 
         ResponseEntity<String> resposta = testRestTemplate
                 .withBasicAuth("root@root.com", "rootroot")

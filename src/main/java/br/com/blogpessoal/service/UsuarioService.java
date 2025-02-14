@@ -1,5 +1,6 @@
 package br.com.blogpessoal.service;
 
+import br.com.blogpessoal.dto.UsuarioCadastroDto;
 import br.com.blogpessoal.dto.UsuarioLoginDto;
 import br.com.blogpessoal.model.UsuarioModel;
 import br.com.blogpessoal.repository.UsuarioRepository;
@@ -26,7 +27,9 @@ public class UsuarioService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public Optional<UsuarioModel> cadastrarUsuario(UsuarioModel usuarioModel) {
+    public Optional<UsuarioModel> cadastrarUsuario(UsuarioCadastroDto usuarioCadastroDto) {
+
+        UsuarioModel usuarioModel = new UsuarioModel(usuarioCadastroDto.nome(), usuarioCadastroDto.usuario(), usuarioCadastroDto.senha(), usuarioCadastroDto.foto());
 
         if (usuarioRepository.findByUsuario(usuarioModel.getUsuario()).isPresent()) {
             return Optional.empty();

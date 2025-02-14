@@ -3,6 +3,7 @@ package br.com.blogpessoal.controller;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.blogpessoal.dto.UsuarioCadastroDto;
 import br.com.blogpessoal.dto.UsuarioLoginDto;
 import br.com.blogpessoal.model.UsuarioModel;
 import br.com.blogpessoal.repository.UsuarioRepository;
@@ -55,7 +56,7 @@ public class UsuarioController {
 
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioModel> postUsuario(@RequestBody @Valid UsuarioModel usuario) {
+    public ResponseEntity<UsuarioModel> postUsuario(@RequestBody @Valid UsuarioCadastroDto usuario) {
 
         return usuarioService.cadastrarUsuario(usuario)
                 .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
