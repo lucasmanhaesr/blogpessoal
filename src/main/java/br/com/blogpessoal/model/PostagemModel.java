@@ -18,7 +18,7 @@ public class PostagemModel {
     @NotNull(message = "Texto não pode ficar em branco")
     @Size(min = 1, max = 255, message = "Texto deve estar entre 1 a 255 caracteres")
     private String texto;
-    @NotNull(message = "Data não pode ficar em branco")
+//    @NotNull(message = "Data não pode ficar em branco")
     private LocalDateTime data;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, targetEntity = TemaModel.class)

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class PostagemService {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(PostagemModel postagem) {
         if(temaRepository.existsById(postagem.getTema().getId())) {
+            postagem.setData(LocalDateTime.now());
             repository.save(postagem);
         }
         else{
