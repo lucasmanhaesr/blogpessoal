@@ -27,8 +27,8 @@ public class PostagemController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("")
-    public void update(@Valid @RequestBody PostagemUpdateDto postagemUpdateDto) {
-        postagemService.update(postagemUpdateDto);
+    public ResponseEntity<PostagemModel> update(@Valid @RequestBody PostagemUpdateDto postagemUpdateDto) {
+        return postagemService.update(postagemUpdateDto);
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -34,14 +34,14 @@ public class PostagemService {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    public void update(PostagemUpdateDto postagemUpdateDto) {
+    public ResponseEntity<PostagemModel> update(PostagemUpdateDto postagemUpdateDto) {
         if(temaRepository.existsById(postagemUpdateDto.tema().getId())) {
             Optional<PostagemModel> postagemOpt = repository.findById(postagemUpdateDto.id());
             if (postagemOpt.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe registro com o id" + postagemUpdateDto.id());
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe registro com o id: " + postagemUpdateDto.id());
             }
             PostagemModel postagemModel = new PostagemModel(postagemUpdateDto.id(), postagemUpdateDto.titulo(), postagemUpdateDto.texto(), postagemUpdateDto.data(), postagemUpdateDto.tema());
-            ResponseEntity.status(HttpStatus.OK).body(repository.save(postagemModel));
+            return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagemModel));
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe o id do tema informado: " + postagemUpdateDto.tema().getId());
